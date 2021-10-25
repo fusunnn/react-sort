@@ -7,6 +7,11 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+//function to sleep for the animation
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 //function to generate random array - takes in number of elements in array
 const generateArr = (x) => {
   let randomArr = [];
@@ -20,47 +25,58 @@ function App() {
   const [numOfElements, setNumOfElements] = useState(50);
   const [arrayToSort, setArrayToSort] = useState(generateArr(numOfElements));
 
+  //button to handle the click of the "generate new array" button
+  const handleNewArrayButton = () => {
+    setArrayToSort(generateArr(numOfElements));
+  };
+
   //bubble sort function
-  const bubbleSort = () => {
-    for (let i = 0; i < arrayToSort.length; i++) {
-      for (let j = 0; j < arrayToSort.length; j++) {
-        let arrayCopy = [...arrayToSort];
-        if (arrayToSort[j] > arrayToSort[j + 1]) {
-          var nextElement = arrayToSort[j + 1];
-          arrayCopy[j + 1] = arrayCopy[j];
-          arrayCopy[j] = nextElement;
-          setArrayToSort(arrayCopy);
+  const bubbleSort = (array) => {
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < array.length; j++) {
+        setTimeout(() => {
+          console.log(array);
+          setArrayToSort(array);
+        }, 200);
+        if (array[j] > array[j + 1]) {
+          var nextElement = array[j + 1];
+          array[j + 1] = array[j];
+          array[j] = nextElement;
         }
       }
     }
   };
-
   return (
     <div
       style={{
-        justifyContent: "center",
-
+        alignItems: "center",
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         backgroundColor: "#282c34",
         minHeight: "100vh",
         maxHeight: "100vh",
       }}
     >
-      {arrayToSort.map((value, index) => {
-        return (
-          <div
-            key={index}
-            style={{
-              width: 80 / numOfElements + "vw",
-              height: (value / 1000) * 80 + "vh",
-              backgroundColor: "white",
-              marginLeft: ".2vw",
-            }}
-          ></div>
-        );
-      })}
-      <button onClick={() => bubbleSort()}>Start</button>
+      <div style={{ display: "flex", minHeight: "80vh", maxHeight: "80vh" }}>
+        {arrayToSort.map((value, index) => {
+          return (
+            <div
+              key={index}
+              style={{
+                width: 80 / numOfElements + "vw",
+                height: (value / 1000) * 80 + "vh",
+                backgroundColor: "white",
+                margin: "0 .1vw",
+                transition: "0.2s",
+              }}
+            ></div>
+          );
+        })}
+      </div>
+      <div>
+        <button onClick={() => bubbleSort(arrayToSort.slice())}>Start</button>
+        <button onClick={() => handleNewArrayButton()}>New array</button>
+      </div>
     </div>
   );
 }
