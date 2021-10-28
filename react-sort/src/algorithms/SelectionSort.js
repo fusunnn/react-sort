@@ -9,14 +9,17 @@ export default async function SelectionSort(
 ) {
   let len = array.length;
   for (let i = 0; i < len; i++) {
-    let tempArray = array.slice(i, len);
-    let tempMin = Math.min(...tempArray);
-    let minIndex = array.indexOf(tempMin, i);
-    setCurrIndices([minIndex, i]);
-    await sleep(10000 / speed);
+    let tempMinIndex = i;
+    for (let j = i + 1; j < len; j++) {
+      setCurrIndices([i, tempMinIndex, j]);
+      if (array[j] < array[tempMinIndex]) {
+        await sleep(5000 / speed);
+        tempMinIndex = j;
+      }
+    }
     let swapElement = array[i];
-    array[i] = array[minIndex];
-    array[minIndex] = swapElement;
+    array[i] = array[tempMinIndex];
+    array[tempMinIndex] = swapElement;
     setArrayToSort(array);
   }
   setIsRunning(false);

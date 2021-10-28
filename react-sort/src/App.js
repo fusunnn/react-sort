@@ -4,6 +4,7 @@ import Bar from "./components/Bar.js";
 import AlgoButton from "./components/AlgoButton";
 import BubbleSort from "./algorithms/BubbleSort";
 import SelectionSort from "./algorithms/SelectionSort";
+import MergeSort from "./algorithms/MergeSort";
 import Slider from "@mui/material/Slider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRedoAlt } from "@fortawesome/free-solid-svg-icons";
@@ -37,6 +38,7 @@ function App() {
   const [newArrayButtonHover, setNewArrayButtonHover] = useState(false);
   const [bubbleButtonHover, setBubbleButtonHover] = useState(false);
   const [selectionButtonHover, setSelectionButtonHover] = useState(false);
+  const [mergeButtonHover, setMergeButtonHover] = useState(false);
 
   useEffect(() => {
     setArrayToSort(generateArr(numOfElements));
@@ -70,6 +72,18 @@ function App() {
     setIsRunning(true);
     var temporaryArrayToSort = arrayToSort.slice();
     SelectionSort(
+      temporaryArrayToSort,
+      setArrayToSort,
+      setCurrIndices,
+      speed,
+      setIsRunning
+    );
+  };
+
+  const handleMerge = () => {
+    var temporaryArrayToSort = arrayToSort.slice();
+
+    MergeSort(
       temporaryArrayToSort,
       setArrayToSort,
       setCurrIndices,
@@ -117,7 +131,7 @@ function App() {
       <div
         className="buttonContainer"
         style={{
-          width: "40vw",
+          width: "100vw",
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-evenly",
@@ -144,6 +158,15 @@ function App() {
           secondaryColor={secondaryColor}
           terceryColor={terceryColor}
         />
+        <AlgoButton
+          algorithm="merge"
+          isRunning={isRunning}
+          handleClick={() => handleMerge()}
+          buttonHover={mergeButtonHover}
+          setButtonHover={setMergeButtonHover}
+          secondaryColor={secondaryColor}
+          terceryColor={terceryColor}
+        />{" "}
         <div
           className="font"
           style={{
@@ -160,7 +183,7 @@ function App() {
             disabled={isRunning}
             size="small"
             min={2}
-            max={100}
+            max={150}
             onChange={(e, value) => handleNumOfElementsChange(value)}
             defaultValue={20}
             valueLabelDisplay="auto"
